@@ -21,6 +21,25 @@ function QuestionList() {
       });
   }
 
+  function handleCorrectAnswerChange(id, correctIndex){
+    fetch(`http://localhost:4000/questions/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({correctIndex})
+    })
+    .then(res => res.json())
+    .then((updatedQuestion) => {
+      const updatedQuestions = questions.map((question) => {
+        if (question.id === updatedQuestion.id) return updatedQuestion;
+        return question;
+      });
+      setQuestions(updatedQuestions);
+    })
+
+  }
+
 
   return (
     <section>
@@ -30,6 +49,7 @@ function QuestionList() {
           key={question.id}
           question={question}
           onDeleteClick={handleDelete}
+          onCorrectAnswerChange={handleCorrectAnswerChange}
         />
       ))}</ul>
     </section>
