@@ -10,6 +10,18 @@ function QuestionList() {
     .then(questions => setQuestions(questions))
   }, []);
 
+  function handleDelete(id) {
+    fetch(`http://localhost:4000/questions/${id}`, {
+      method: "DELETE",
+    })
+      .then((r) => r.json())
+      .then(() => {
+        const updatedQuestions = questions.filter((question) => question.id !== id);
+        setQuestions(updatedQuestions);
+      });
+  }
+
+
   return (
     <section>
       <h1>Quiz Questions</h1>
@@ -17,6 +29,7 @@ function QuestionList() {
         <QuestionItem
           key={question.id}
           question={question}
+          onDeleteClick={handleDelete}
         />
       ))}</ul>
     </section>
